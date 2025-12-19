@@ -1,7 +1,7 @@
 #include<iostream>
 #include<string>
 #include<cctype>
-
+#include<cmath>
 
 using namespace std;
 
@@ -211,3 +211,30 @@ bool is_Valid_Password(string password){
 // bool is_Valid_DOB(int day,int month,int year) {
     
 // }
+
+class GeoLocation{
+private:
+    double latitude;
+    double longitude;
+public:
+    GeoLocation() : latitude(0.0), longitude(0.0) {}
+    GeoLocation(double lat, double lon) : latitude(lat), longitude(lon) {}
+
+    double  getLatitude() const{
+        return latitude;
+    }
+    double getlongtitude() const{
+        return longitude;
+    }
+    void setLatitude(double lat){
+        latitude = lat;
+    }
+    void setlongtitude(double lon){
+        longitude = lon;
+    }
+    double calculateDistance(const GeoLocation& location1, const GeoLocation& location2){
+        double x = location1.latitude - location2.latitude;
+        double y = location1.longitude - location2.longitude;
+        return sqrt(pow(x, 2) + pow(y, 2));
+    }
+};
