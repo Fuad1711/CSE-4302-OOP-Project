@@ -6,6 +6,12 @@
 using namespace std;
 
 
+enum class RideStatus { REQUESTED, ASSIGNED, ONGOGING, COMPLETED, CANCELLED};
+enum class PaymentMethod { CASH, DIGITAL_WALLET};
+enum class PaymentStatus { PENDING, SUCCESS, FAILED};
+enum class VehicleType { BIKE, CNG, CAR_AFFORABLE, CAR_COMFORTABLE, CAR_LUXURY};
+
+
 class User{
     private:
 
