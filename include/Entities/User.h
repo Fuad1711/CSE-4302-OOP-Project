@@ -1,3 +1,6 @@
+#ifndef USER_H
+#define USER_H
+
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -240,3 +243,5 @@ bool is_Valid_DOB(int day,int month,int year) {
     }
     return true;
 }
+
+#endif
