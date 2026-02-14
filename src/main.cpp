@@ -1,6 +1,10 @@
 #include <iostream>
+#include "../include/Entities/User.h"
 
-int main(int argc, char* argv[]) {
-    std::cout << "--- Pathao Rip-Off System Starting ---" << std::endl;
+using namespace std;
+
+int main() {
+    User ayman("Aymannow", "Chowdhury", "017...", "Dhaka", 14, 2, 2005, "a@b.com", "ayman_nz", "pass123");
+    ayman.saveData();
     return 0;
 }
