@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <cctype>
+#include <vector>
 using namespace std;
 
 // Function Prototypes
@@ -28,70 +29,84 @@ void User::updateProfile(){
         string newPassword;
         int day, month, year;
         switch (choice){
-        case 1:
-            cout << "Enter your first name: ";
-            cin >> newFirstName;
-            while (!is_Valid_Name(newFirstName)){
-                cout << "\n Invalid! Please enter again" << endl;
+            case 1:
+                cout << "Enter your first name: ";
                 cin >> newFirstName;
-            }
-            firstName = newFirstName;
+                while (!is_Valid_Name(newFirstName)){
+                    cout << "\n Invalid! Please enter again" << endl;
+                    cin >> newFirstName;
+                }
+                firstName = newFirstName;
 
-            cout << "Enter your last name: ";
-            cin >> newLastName;
-            while (!is_Valid_Name(newLastName)){
-                cout << "\n Invalid! Please enter again" << endl;
+                cout << "Enter your last name: ";
                 cin >> newLastName;
-            }
-            lastName = newLastName;
-            break;
-        case 2:
-            cout << "Enter your phone number: ";
-            cin >> newNumber;
-            while (!is_Valid_Number(newNumber)){
-                cout << "\n Invalid! Please enter again" << endl;
+                while (!is_Valid_Name(newLastName)){
+                    cout << "\n Invalid! Please enter again" << endl;
+                    cin >> newLastName;
+                }
+                lastName = newLastName;
+                break;
+            case 2:
+                cout << "Enter your phone number: ";
                 cin >> newNumber;
-            }
-            phoneNumber = newNumber;
-            break;
-        // case 3://date of birth
-        case 4:
-            cin.ignore();
-            getline(cin, newAddress);
-            homeAddress = newAddress;
-            break;
-        case 5:
-            cout << "Enter your email: ";
-            cin >> newEmail;
-            while (!is_Valid_Email(newEmail)){
-                cout << "\n Invalid! Please enter again" << endl;
+                while (!is_Valid_Number(newNumber)){
+                    cout << "\n Invalid! Please enter again" << endl;
+                    cin >> newNumber;
+                }
+                phoneNumber = newNumber;
+                break;
+            // case 3://date of birth
+            case 4:
+                cin.ignore();
+                getline(cin, newAddress);
+                homeAddress = newAddress;
+                break;
+            case 5:
+                cout << "Enter your email: ";
                 cin >> newEmail;
-            }
-            email = newEmail;
-            break;
-        case 6:
-            cout << "Enter a user name:";
-            cin >> newUserName;
-            // username validity should be checked by searching the file and looking for same username.
-            break;
-        case 7:
-            // first check old password then allow to change
-            cout << "Enter old password:";
-            // match pasword
-            cout << "Enter new password:";
-            cin >> newPassword;
-            password = newPassword;
-            break;
-        default:
-            break;
+                while (!is_Valid_Email(newEmail)){
+                    cout << "\n Invalid! Please enter again" << endl;
+                    cin >> newEmail;
+                }
+                email = newEmail;
+                break;
+            case 6:
+                cout << "Enter a user name:";
+                cin >> newUserName;
+                while(is_Taken_Username(newUserName)){
+                    cout << "\n Invalid! Please enter again";
+                    cin >> newUserName; 
+                }
+                userName=newUserName;
+                cout << "Username updated successfully" << endl;
+                break;
+            case 7:
+                string oldPassword;
+                cout<<"Enter your current password";
+                cin >> oldPassword;
+                if(oldPassword==password){
+                    cout << "Enter new password (min 8 characters):" <<endl;
+                    cin >> newPassword;
+                
+                    while(!is_Valid_Password(newPassword) || newPassword!=oldPassword){
+                        cout << "Invalid Password. Try again: " << endl;
+                        cin >> newPassword;
+                    }
+                    password = newPassword;
+                    cout << "Password Updated" << endl;
+                }
+                break;
+            default:
+                break;
         }
     }
+    updateFile();
 }
 
 void User::viewProfile(){
     cout << "Name: " << firstName << " " << lastName << endl;
     cout << "Phone Number: " << phoneNumber << endl;
-    cout << "Date of birht: " << day << "\\" << month << "\\" << year << endl;
+    cout << "Date of birth: " << day << "\\" << month << "\\" << year << endl;
     cout << "Address: " << homeAddress << endl;
     cout << "Email: " << email << endl;
     cout << "User Name:" << userName << endl;
@@ -152,11 +167,10 @@ User Register(){
     string userName; // store the username in a csv file
     cout << "Enter a user name:"; 
     cin >> userName;
-    while(!is_Valid_Username(userName)){
+    while(is_Taken_Username(userName)){
         cout << "\n Invalid! Please enter again" << endl;
         cin >> userName;
     }
-    //username validity should be checked by searching the file and looking for same username.
     
     //Password
     string password; // store password in csv file
@@ -186,6 +200,36 @@ void User::saveData(){
     }
 }
 
+void User::updateFile(){
+    ifstream inFile("data/User_credentials.csv");
+    vector<string> fileData;
+    string line;
+    if(inFile.is_open()){
+        while(getline(inFile,line)){
+            int position = line.find(',');
+            string currentUser = line.substr(0,position);
+            if(currentUser == userName){
+                string updated = userName + ',' + password + ',' + firstName
+                + ',' + lastName + ',' + phoneNumber + ',' + email + ',' +
+                to_string(day) + "/" + to_string(month) + "/" + to_string(year);
+                fileData.push_back(updated);
+            }
+            else{
+                fileData.push_back(line);
+            }
+        }
+        inFile.close();
+    }
+
+    ofstream outFile("data/User_credentials.csv");
+    if(outFile.is_open()){
+        for( auto& line : fileData){
+            outFile << line << endl;
+        }
+        outFile.close();
+    }
+}
+
 bool is_Valid_Name(string name){
     for (unsigned char c : name){
         if (!isalpha(c)){
@@ -197,7 +241,7 @@ bool is_Valid_Name(string name){
 
 bool is_Valid_Number(string number){
     for (unsigned char c : number){
-        if (isalpha(c)){
+        if (!isdigit(c)){
             return false;
         }
     }
@@ -215,7 +259,7 @@ bool is_Valid_Email(string email){
     }
 }
 
-bool is_Valid_Username(string uname){
+bool is_Taken_Username(string uname){
     ifstream inFile("data/User_credentials.csv");
     string line;
     if(inFile.is_open()){
@@ -223,12 +267,12 @@ bool is_Valid_Username(string uname){
             int position=line.find(',');
             string found=line.substr(0,position);
             if(uname==found){
-                return false;
+                return true;
             }
         }
         inFile.close();
     }
-    return true;
+    return false;
 }
 
 bool is_Valid_Password(string password){
