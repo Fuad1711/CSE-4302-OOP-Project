@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
 // Function Prototypes
@@ -74,21 +75,35 @@ void User::updateProfile() {
         case 6:
             cout << "Enter a user name:";
             cin >> newUserName;
-            // username validity should be checked by searching the file and
-            // looking for same username.
+            while (is_Taken_Username(newUserName)) {
+                cout << "\n Invalid! Please enter again";
+                cin >> newUserName;
+            }
+            userName = newUserName;
+            cout << "Username updated successfully" << endl;
             break;
         case 7:
-            // first check old password then allow to change
-            cout << "Enter old password:";
-            // match pasword
-            cout << "Enter new password:";
-            cin >> newPassword;
-            password = newPassword;
+            string oldPassword;
+            cout << "Enter your current password";
+            cin >> oldPassword;
+            if (oldPassword == password) {
+                cout << "Enter new password (min 8 characters):" << endl;
+                cin >> newPassword;
+
+                while (!is_Valid_Password(newPassword) ||
+                       newPassword != oldPassword) {
+                    cout << "Invalid Password. Try again: " << endl;
+                    cin >> newPassword;
+                }
+                password = newPassword;
+                cout << "Password Updated" << endl;
+            }
             break;
         default:
             break;
         }
     }
+    updateFile();
 }
 
 void User::viewProfile() {
@@ -155,12 +170,10 @@ User Register() {
     string userName; // store the username in a csv file
     cout << "Enter a user name:";
     cin >> userName;
-    while (!is_Valid_Username(userName)) {
+    while (is_Taken_Username(userName)) {
         cout << "\n Invalid! Please enter again" << endl;
         cin >> userName;
     }
-    // username validity should be checked by searching the file and looking for
-    // same username.
 
     // Password
     string password; // store password in csv file
@@ -186,6 +199,36 @@ void User::saveData() {
     }
 }
 
+void User::updateFile() {
+    ifstream inFile("data/User_credentials.csv");
+    vector<string> fileData;
+    string line;
+    if (inFile.is_open()) {
+        while (getline(inFile, line)) {
+            int position = line.find(',');
+            string currentUser = line.substr(0, position);
+            if (currentUser == userName) {
+                string updated = userName + ',' + password + ',' + firstName +
+                                 ',' + lastName + ',' + phoneNumber + ',' +
+                                 email + ',' + to_string(day) + "/" +
+                                 to_string(month) + "/" + to_string(year);
+                fileData.push_back(updated);
+            } else {
+                fileData.push_back(line);
+            }
+        }
+        inFile.close();
+    }
+
+    ofstream outFile("data/User_credentials.csv");
+    if (outFile.is_open()) {
+        for (auto &line : fileData) {
+            outFile << line << endl;
+        }
+        outFile.close();
+    }
+}
+
 bool is_Valid_Name(string name) {
     for (unsigned char c : name) {
         if (!isalpha(c)) {
@@ -197,7 +240,7 @@ bool is_Valid_Name(string name) {
 
 bool is_Valid_Number(string number) {
     for (unsigned char c : number) {
-        if (isalpha(c)) {
+        if (!isdigit(c)) {
             return false;
         }
     }
@@ -214,7 +257,7 @@ bool is_Valid_Email(string email) {
     }
 }
 
-bool is_Valid_Username(string uname) {
+bool is_Taken_Username(string uname) {
     ifstream inFile("data/User_credentials.csv");
     string line;
     if (inFile.is_open()) {
@@ -222,12 +265,12 @@ bool is_Valid_Username(string uname) {
             int position = line.find(',');
             string found = line.substr(0, position);
             if (uname == found) {
-                return false;
+                return true;
             }
         }
         inFile.close();
     }
-    return true;
+    return false;
 }
 
 bool is_Valid_Password(string password) {
