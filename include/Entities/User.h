@@ -37,6 +37,7 @@ public:
     void updateProfile();
     virtual void viewProfile()=0;
     void saveData();
+    void updateFile();
 };
 
 #endif

@@ -12,6 +12,7 @@ bool is_Valid_Number(string number);
 bool is_Valid_Email(string email);
 bool is_Valid_DOB(int day, int month, int year);
 bool is_Valid_Username(string uname);
+bool is_Taken_Username(string uname);
 bool is_Valid_Password(string password);
 
 void User::updateProfile() {
@@ -82,7 +83,7 @@ void User::updateProfile() {
             userName = newUserName;
             cout << "Username updated successfully" << endl;
             break;
-        case 7:
+        case 7: {
             string oldPassword;
             cout << "Enter your current password";
             cin >> oldPassword;
@@ -99,6 +100,7 @@ void User::updateProfile() {
                 cout << "Password Updated" << endl;
             }
             break;
+        }
         default:
             break;
         }
@@ -116,7 +118,7 @@ void User::viewProfile() {
     return;
 }
 
-User Register() {
+User *Register() {
 
     // Name
     string firstName, lastName;
@@ -183,9 +185,8 @@ User Register() {
         cout << "\n Invalid! Please enter again" << endl;
         cin >> password;
     }
-    User newUser(firstName, lastName, phoneNumber, address, day, month, year,
-                 email, userName, password);
-    return newUser;
+    cout << "Error: Base abstract User cannot be instantiated via this function directly without knowing the derived type." << endl;
+    return nullptr;
 }
 
 void User::saveData() {
