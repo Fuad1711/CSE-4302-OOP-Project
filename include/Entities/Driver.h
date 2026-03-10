@@ -7,7 +7,7 @@
 using namespace std;
 
 class Driver : public User {
-private:
+  private:
     string licenseNumber;
     string vehicleType;
     string vehicleModel;
@@ -15,16 +15,14 @@ private:
     float rating;
     bool isAvailable;
 
-public:
-    // Default Constructor
+  public:
     Driver();
 
-    // Parameterized Constructor
-    Driver(string firstName, string lastName, string phoneNumber, string address, 
-           int day, int month, int year, string email, string uname, string password,
-           string licenseNum, string vType, string vModel, string lPlate, float initialRating = 0.0);
+    Driver(string firstName, string lastName, string phoneNumber,
+           string address, int day, int month, int year, string email,
+           string uname, string password, string licenseNum, string vType,
+           string vModel, string lPlate, float initialRating = 0.0);
 
-    // Getters
     string getLicenseNumber() const;
     string getVehicleType() const;
     string getVehicleModel() const;
@@ -32,16 +30,14 @@ public:
     float getRating() const;
     bool getAvailability() const;
 
-    // Setters
     void setLicenseNumber(string lNum);
     void setVehicleType(string vType);
     void setVehicleModel(string vModel);
     void setLicensePlate(string lPlate);
     void setRating(float newRating);
-    
-    // Core Methods
+
     void toggleAvailability(); // Toggle between available/unavailable
-    
+
     // Overridden methods from User class
     void updateProfile();
     void viewProfile();
