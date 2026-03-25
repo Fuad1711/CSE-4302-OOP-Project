@@ -18,23 +18,29 @@ protected:
     string password;
     //Date of Birth
     int day,month,year;
-    int age;
 
 public:
 
-    User():firstName(""),lastName(""),phoneNumber(""),homeAddress(""),email(""),userName(""),password(""),day(0),month(0),year(0){}
+    User() : firstName(""), lastName(""), 
+        phoneNumber(""), homeAddress(""), 
+        email(""), userName(""), 
+        password(""), day(0), month(0), year(0){}
     
-    User(string firstName,string lastName, string phoneNumber,string address, int day, int month, int year, string email,string uname, string password):
-    firstName(firstName),
-    lastName(lastName),
-    phoneNumber(phoneNumber),
-    homeAddress(address),
-    day(day), month(month), year(year),
-    email(email),
-    userName(uname),
-    password(password){}
+    User(string firstName, string lastName, 
+        string phoneNumber,string address, 
+        int day, int month, int year, 
+        string email, string uname, 
+        string password)
+        : firstName(firstName),
+        lastName(lastName),
+        phoneNumber(phoneNumber),
+        homeAddress(address),
+        day(day), month(month), year(year),
+        email(email),
+        userName(uname),
+        password(password){}
 
-    void updateProfile();
+    virtual void updateProfile();
     virtual void viewProfile()=0;
     void saveData();
     void updateFile();

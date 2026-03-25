@@ -30,10 +30,11 @@ void User::updateProfile() {
         string newAddress;
         string newUserName;
         string newPassword;
-        int day, month, year;
+        int newDay, newMonth, newYear;
         switch (choice) {
         case 1:
-            cout << "Enter your first name: ";
+            // Name
+            cout << "Enter your first name: \n";
             cin >> newFirstName;
             while (!is_Valid_Name(newFirstName)) {
                 cout << "\n Invalid! Please enter again" << endl;
@@ -41,7 +42,7 @@ void User::updateProfile() {
             }
             firstName = newFirstName;
 
-            cout << "Enter your last name: ";
+            cout << "Enter your last name: \n";
             cin >> newLastName;
             while (!is_Valid_Name(newLastName)) {
                 cout << "\n Invalid! Please enter again" << endl;
@@ -50,40 +51,56 @@ void User::updateProfile() {
             lastName = newLastName;
             break;
         case 2:
-            cout << "Enter your phone number: ";
+            // Phone Number
+            cout << "Enter your phone number: \n";
             cin >> newNumber;
             while (!is_Valid_Number(newNumber)) {
-                cout << "\n Invalid! Please enter again" << endl;
+                cout << "Invalid! Please enter again" << endl;
                 cin >> newNumber;
             }
             phoneNumber = newNumber;
             break;
-        // case 3://date of birth
+        case 3:
+            // DOB
+            cout << "Enter your date of Birth: \n";
+            cin >> newDay >> newMonth >> newYear;
+            while(!is_Valid_DOB(newDay,newMonth,newYear)){
+                cout << "Invalid! Please enter again" << endl;
+                cin >> newDay >> newMonth >> newYear;
+            }
+            day=newDay;
+            month=newMonth;
+            year=newYear;
+            break;
         case 4:
+            // Address
             cin.ignore();
             getline(cin, newAddress);
             homeAddress = newAddress;
             break;
         case 5:
+            // Email
             cout << "Enter your email: ";
             cin >> newEmail;
             while (!is_Valid_Email(newEmail)) {
-                cout << "\n Invalid! Please enter again" << endl;
+                cout << "Invalid! Please enter again" << endl;
                 cin >> newEmail;
             }
             email = newEmail;
             break;
         case 6:
+            // User name
             cout << "Enter a user name:";
             cin >> newUserName;
             while (is_Taken_Username(newUserName)) {
-                cout << "\n Invalid! Please enter again";
+                cout << "Invalid! Please enter again";
                 cin >> newUserName;
             }
             userName = newUserName;
             cout << "Username updated successfully" << endl;
             break;
-        case 7: {
+        case 7:
+            // Password
             string oldPassword;
             cout << "Enter your current password";
             cin >> oldPassword;
@@ -100,22 +117,12 @@ void User::updateProfile() {
                 cout << "Password Updated" << endl;
             }
             break;
-        }
+        
         default:
             break;
         }
     }
     updateFile();
-}
-
-void User::viewProfile() {
-    cout << "Name: " << firstName << " " << lastName << endl;
-    cout << "Phone Number: " << phoneNumber << endl;
-    cout << "Date of birth: " << day << "\\" << month << "\\" << year << endl;
-    cout << "Address: " << homeAddress << endl;
-    cout << "Email: " << email << endl;
-    cout << "User Name:" << userName << endl;
-    return;
 }
 
 User *Register() {
