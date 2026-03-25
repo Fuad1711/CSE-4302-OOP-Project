@@ -7,7 +7,7 @@ using namespace std;
 // Constructors
 Rider::Rider()
     : User(), currentLocation(0.0, 0.0), dropoffLocation(0.0, 0.0), rating(0.0),
-      preferredPaymentMethod("Cash"), isRiding(false) {
+      ratingCount(0), preferredPaymentMethod("Cash"), isRiding(false) {
 }
 
 Rider::Rider(string firstName, string lastName, string phoneNumber,
@@ -17,15 +17,15 @@ Rider::Rider(string firstName, string lastName, string phoneNumber,
     : User(firstName, lastName, phoneNumber, address, day, month, year, email,
            uname, password),
       currentLocation(0.0, 0.0), dropoffLocation(0.0, 0.0),
-      rating(initialRating), preferredPaymentMethod(defaultPayment),
+      rating(initialRating), ratingCount(0), preferredPaymentMethod(defaultPayment),
       isRiding(false) {
 }
 
 // Getters
-GeoLocation Rider::getCurrentLocation() const {
+Geolocation Rider::getCurrentLocation() const {
     return currentLocation;
 }
-GeoLocation Rider::getDropoffLocation() const {
+Geolocation Rider::getDropoffLocation() const {
     return dropoffLocation;
 }
 float Rider::getRating() const {
@@ -39,21 +39,27 @@ bool Rider::getRideStatus() const {
 }
 
 // Setters
-void Rider::setCurrentLocation(GeoLocation loc) {
+void Rider::setCurrentLocation(Geolocation loc) {
     currentLocation = loc;
 }
-void Rider::setDropoffLocation(GeoLocation loc) {
+void Rider::setDropoffLocation(Geolocation loc) {
     dropoffLocation = loc;
 }
 void Rider::setRating(float newRating) {
     rating = newRating;
+}
+void Rider::setRatingCount(int count) {
+    ratingCount = count;
+}
+int Rider::getRatingCount() const {
+    return ratingCount;
 }
 void Rider::setPreferredPaymentMethod(string method) {
     preferredPaymentMethod = method;
 }
 
 // Core Methods
-void Rider::requestRide(GeoLocation dropoff) {
+void Rider::requestRide(Geolocation dropoff) {
     if (isRiding) {
         cout << "Already in a ride!" << endl;
         return;
@@ -110,10 +116,10 @@ void Rider::viewProfile() {
     cout << "Preferred Payment: " << preferredPaymentMethod << endl;
     cout << "Status: " << (isRiding ? "In a Ride" : "Not in a Ride") << endl;
     cout << "Current Location: (" << currentLocation.getLatitude() << ", "
-         << currentLocation.getlongtitude() << ")" << endl;
+         << currentLocation.getLongitude() << ")" << endl;
     if (isRiding) {
         cout << "Destination: (" << dropoffLocation.getLatitude() << ", "
-             << dropoffLocation.getlongtitude() << ")" << endl;
+             << dropoffLocation.getLongitude() << ")" << endl;
     }
     cout << "---------------------" << endl;
     return;

@@ -32,6 +32,8 @@ public:
     void setVehicleModel(string vModel);
     void setLicensePlate(string lPlate);
     void setRating(float newRating);
+    void setRatingCount(int count);
+    int getRatingCount() const;
 
     void toggleAvailability(); // Toggle between available/unavailable
 
