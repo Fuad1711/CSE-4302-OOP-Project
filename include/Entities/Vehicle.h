@@ -2,23 +2,45 @@
 #define VEHICLE_H
 
 #include "../Common/Types.h"
-#include <string>
+#include<string>
+using namespace std;
 
-class Vehicle {
+class Vehicle{
 private:
-    VehicleType vehicleType;
-    std::string model;
-    std::string licensePlate;
+    string vehicleModel;
+    string vehicleId;
+    string licensePlate;
+    string vehicleColor;
+    VehicleType type;
+    double baseFare;
+    double perKmRate;
 
 public:
-    Vehicle(VehicleType type, std::string mod, std::string plate)
-        : vehicleType(type), model(mod), licensePlate(plate) {}
+    Vehicle();
 
-    VehicleType getType() const { return vehicleType; }
-    std::string getModel() const { return model; }
-    std::string getLicensePlate() const { return licensePlate; }
+    Vehicle(string vModel,string vId, string lPlate, string col,
+        double fare, double rate, VehicleType vType);
+
+    //Getter
+    string getModel() const;
+    string getVehicleId() const;
+    string getLicensePlate() const;
+    string getVehicleColor() const;
+    VehicleType getType() const;
+    double getBaseFare() const;
+    double getRate() const;
     
-    std::string getTypeAsString() const;
+    //Setter
+    void setModel(string m);
+    void setVehicleId(string id);
+    void setLicensePlate(string l);
+    void setVehicleColor(string c);
+    void setType(VehicleType v);
+    void setBaseFare(double f);
+    void setPerKmRate(double r);
+
+    string vehicleTypeToString(VehicleType v);
+    void displayInfo() const;
 };
 
-#endif // VEHICLE_H
+#endif 

@@ -29,9 +29,6 @@ enum class PaymentStatus {
     SUCCESS, 
     FAILED 
 };
-struct GeoLocation {
-    double latitude;
-    double longitude;
-};
+
 
 #endif
