@@ -69,12 +69,12 @@ void Rider::requestRide(GeoLocation dropoff) {
 
 void Rider::endRide() {
     if (!isRiding) {
-        cout << "not in a ride." << endl;
+        cout << "Not in a ride." << endl;
         return;
     }
     isRiding = false;
     currentLocation = dropoffLocation;
-    cout << "success. You have arrived at your destination." << endl;
+    cout << "Success. You have arrived at your destination." << endl;
 }
 
 // Overriden methods
@@ -99,9 +99,13 @@ void Rider::updateProfile() {
 }
 
 void Rider::viewProfile() {
-    cout << "RIDER PROFILE " << endl;
-    User::viewProfile();
-
+    cout << "Rider Profile " << endl;
+    cout << "Name: " << firstName << " " << lastName << endl;
+    cout << "Phone Number: " << phoneNumber << endl;
+    cout << "Date of birth: " << day << "\\" << month << "\\" << year << endl;
+    cout << "Address: " << homeAddress << endl;
+    cout << "Email: " << email << endl;
+    cout << "User Name:" << userName << endl;
     cout << "Rating: " << rating << " Stars" << endl;
     cout << "Preferred Payment: " << preferredPaymentMethod << endl;
     cout << "Status: " << (isRiding ? "In a Ride" : "Not in a Ride") << endl;
@@ -112,21 +116,26 @@ void Rider::viewProfile() {
              << dropoffLocation.getlongtitude() << ")" << endl;
     }
     cout << "---------------------" << endl;
+    return;
 }
 
 void Rider::saveData() {
-    ofstream outFile("data/rider_credentials.csv", ios::app);
-    if (outFile.is_open()) {
-
+    try{
+        ofstream outFile("data/rider_credentials.csv", ios::app);
+        
+        if(!outFile.is_open()){
+            throw runtime_error("Unable to open data/rider_credentials.csv for saving.");
+        }
         outFile << firstName << "," << lastName << "," << phoneNumber << ","
                 << homeAddress << "," << email << "," << userName << ","
                 << password << "," << day << "," << month << "," << year << ","
                 << rating << "," << preferredPaymentMethod << "," << isRiding
                 << "\n";
+
         outFile.close();
         cout << "Rider data saved successfully" << endl;
-    } else {
-        cout << "Error: Unable to open data/rider_credentials.csv for saving."
-             << endl;
+    }
+    catch(const exception& e) {
+        cerr << "File Error: " << e.what() << endl;
     }
 }

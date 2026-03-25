@@ -62,7 +62,9 @@ void Driver::toggleAvailability() {
 
 // Overridden Methods
 void Driver::updateProfile() {
+    viewProfile();
     int choice;
+    
     cout << "Update Driver Profile" << endl;
     cout << "1. Update Basic Info (Inherited)" << endl;
     cout << "2. Update Vehicle Info" << endl;
@@ -73,11 +75,19 @@ void Driver::updateProfile() {
         User::updateProfile();
     } else if (choice == 2) {
         cout << "Enter new Vehicle Type (e.g. Car, Bike): ";
-        cin >> vehicleType;
+        string vType;
+        cin >> vType;
+        setVehicleType(vType);
+
         cout << "Enter new Vehicle Model: ";
-        cin >> vehicleModel;
+        string vModel;
+        cin >> vModel;
+        setVehicleModel(vType);
+        
         cout << "Enter new License Plate: ";
-        cin >> licensePlate;
+        string lPlate;
+        cin >> lPlate;
+        setLicenseNumber(lPlate);
         cout << "Vehicle information updated successfully!" << endl;
     } else {
         cout << "Invalid choice." << endl;
@@ -86,32 +96,38 @@ void Driver::updateProfile() {
 
 void Driver::viewProfile() {
     cout << "\nDriver Profile: " << endl;
-
-    User::viewProfile();
-
+    cout << "Name: " << firstName << " " << lastName << endl;
+    cout << "Phone Number: " << phoneNumber << endl;
+    cout << "Date of birth: " << day << "\\" << month << "\\" << year << endl;
+    cout << "Address: " << homeAddress << endl;
+    cout << "Email: " << email << endl;
+    cout << "User Name:" << userName << endl;
     cout << "License Number: " << licenseNumber << endl;
     cout << "Vehicle: " << vehicleModel << " (" << vehicleType << ") - "
          << licensePlate << endl;
     cout << "Rating: " << rating << " Stars" << endl;
     cout << "Status: " << (isAvailable ? "Available" : "Currently Unavailable")
          << endl;
+    return;
 }
 
 void Driver::saveData() {
-
-    ofstream outFile("data/driver_credentials.csv", ios::app);
-    if (outFile.is_open()) {
+    try{
+        ofstream outFile("data/driver_credentials.csv", ios::app);
+        if (!outFile.is_open()) {
+            throw runtime_error("Could not open data/driver_credentials.csv");
+        }
         outFile << firstName << "," << lastName << "," << phoneNumber << ","
                 << homeAddress << "," << email << "," << userName << ","
                 << password << "," << day << "," << month << "," << year << ","
-
                 << licenseNumber << "," << vehicleType << "," << vehicleModel
                 << "," << licensePlate << "," << rating << "," << isAvailable
                 << "\n";
         outFile.close();
         cout << "Driver data saved successfully" << endl;
-    } else {
-        cout << "Error: Unable to open data/driver_credentials.csv for saving."
-             << endl;
+    }
+    catch(const exception& e) {
+        cerr << "File Error: " << e.what() << endl;
     }
 }
+
