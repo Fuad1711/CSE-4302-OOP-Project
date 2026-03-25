@@ -2,7 +2,7 @@
 
 Driver::Driver()
     : User(), licenseNumber(""), vehicleType(""), vehicleModel(""),
-      licensePlate(""), rating(0.0), isAvailable(false) {
+      licensePlate(""), rating(0.0), ratingCount(0), isAvailable(false) {
 }
 
 Driver::Driver(string firstName, string lastName, string phoneNumber,
@@ -14,7 +14,7 @@ Driver::Driver(string firstName, string lastName, string phoneNumber,
     : User(firstName, lastName, phoneNumber, address, day, month, year, email,
            uname, password),
       licenseNumber(licenseNum), vehicleType(vType), vehicleModel(vModel),
-      licensePlate(lPlate), rating(initialRating), isAvailable(true) {
+      licensePlate(lPlate), rating(initialRating), ratingCount(0), isAvailable(true) {
 } // true by default
 
 string Driver::getLicenseNumber() const {
@@ -51,6 +51,12 @@ void Driver::setLicensePlate(string lPlate) {
 }
 void Driver::setRating(float newRating) {
     rating = newRating;
+}
+void Driver::setRatingCount(int count) {
+    ratingCount = count;
+}
+int Driver::getRatingCount() const {
+    return ratingCount;
 }
 
 // Core Methods

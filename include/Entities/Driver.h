@@ -13,6 +13,7 @@ class Driver : public User {
     string vehicleModel;
     string licensePlate;
     float rating;
+    int ratingCount;
     bool isAvailable;
 
   public:
@@ -35,6 +36,8 @@ class Driver : public User {
     void setVehicleModel(string vModel);
     void setLicensePlate(string lPlate);
     void setRating(float newRating);
+    void setRatingCount(int count);
+    int getRatingCount() const;
 
     void toggleAvailability(); // Toggle between available/unavailable
 

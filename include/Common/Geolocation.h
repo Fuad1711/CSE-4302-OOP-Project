@@ -1,37 +1,51 @@
 #ifndef GEOLOCATION_H
 #define GEOLOCATION_H
-#include<math.h>
 
-class GeoLocation{
+#include <math.h>
+#include <string>
+
+using namespace std;
+
+class Geolocation {
 private:
     double latitude;
     double longitude;
     string locationName;
-public:
-    GeoLocation() : latitude(0.0), longitude(0.0) {}
-    GeoLocation(double lat, double lon) : latitude(lat), longitude(lon) {}
 
-    double  getLatitude() const{
+public:
+    Geolocation() : latitude(0.0), longitude(0.0), locationName("") {}
+    Geolocation(double lat, double lon, string name = "") 
+        : latitude(lat), longitude(lon), locationName(name) {}
+
+    double getLatitude() const {
         return latitude;
     }
-    double getlongtitude() const{
+    double getLongitude() const {
         return longitude;
     }
-    string getLocationName() const{
+    string getLocationName() const {
         return locationName;
     }
-    void setLatitude(double lat){
+
+    void setLatitude(double lat) {
         latitude = lat;
     }
-    void setlongtitude(double lon){
+    void setLongitude(double lon) {
         longitude = lon;
     }
-    void setLocationName(string name){
-        locationName=name;
+    void setLocationName(string name) {
+        locationName = name;
     }
-    double calculateDistance(const GeoLocation& location1, const GeoLocation& location2){
-        double x = location1.latitude - location2.latitude;
-        double y = location1.longitude - location2.longitude;
+
+    double calculateDistance(const Geolocation& other) const {
+        double x = latitude - other.latitude;
+        double y = longitude - other.longitude;
+        return sqrt(pow(x, 2) + pow(y, 2));
+    }
+
+    static double calculateDistance(const Geolocation& loc1, const Geolocation& loc2) {
+        double x = loc1.latitude - loc2.latitude;
+        double y = loc1.longitude - loc2.longitude;
         return sqrt(pow(x, 2) + pow(y, 2));
     }
 };

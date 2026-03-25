@@ -99,7 +99,7 @@ void User::updateProfile() {
             userName = newUserName;
             cout << "Username updated successfully" << endl;
             break;
-        case 7:
+        case 7: {
             // Password
             string oldPassword;
             cout << "Enter your current password";
@@ -117,6 +117,7 @@ void User::updateProfile() {
                 cout << "Password Updated" << endl;
             }
             break;
+        }
         
         default:
             break;

@@ -9,9 +9,10 @@ using namespace std;
 
 class Rider : public User {
   private:
-    GeoLocation currentLocation;
-    GeoLocation dropoffLocation;
+    Geolocation currentLocation;
+    Geolocation dropoffLocation;
     float rating;
+    int ratingCount;
     string preferredPaymentMethod;
     bool isRiding;
 
@@ -24,20 +25,22 @@ class Rider : public User {
           string defaultPayment = "Cash");
 
     // Getters
-    GeoLocation getCurrentLocation() const;
-    GeoLocation getDropoffLocation() const;
+    Geolocation getCurrentLocation() const;
+    Geolocation getDropoffLocation() const;
     float getRating() const;
     string getPreferredPaymentMethod() const;
     bool getRideStatus() const;
 
     // Setters
-    void setCurrentLocation(GeoLocation loc);
-    void setDropoffLocation(GeoLocation loc);
+    void setCurrentLocation(Geolocation loc);
+    void setDropoffLocation(Geolocation loc);
     void setRating(float newRating);
+    void setRatingCount(int count);
+    int getRatingCount() const;
     void setPreferredPaymentMethod(string method);
     
     // Core Methods
-    void requestRide(GeoLocation dropoff);
+    void requestRide(Geolocation dropoff);
     void endRide();
 
     // Overridden methods

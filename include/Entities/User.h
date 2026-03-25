@@ -40,6 +40,8 @@ public:
         userName(uname),
         password(password){}
 
+    string getFirstName() const { return firstName; }
+    string getLastName() const { return lastName; }
     virtual void updateProfile();
     virtual void viewProfile()=0;
     void saveData();
