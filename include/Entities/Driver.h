@@ -7,15 +7,12 @@
 using namespace std;
 
 class Driver : public User {
-  private:
-    string licenseNumber;
-    string vehicleType;
-    string vehicleModel;
-    string licensePlate;
-    float rating;
-    bool isAvailable;
+private:
+  string licenseNumber;
+  float rating;
+  bool isAvailable;
 
-  public:
+public:
     Driver();
 
     Driver(string firstName, string lastName, string phoneNumber,
