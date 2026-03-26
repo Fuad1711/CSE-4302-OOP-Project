@@ -17,8 +17,8 @@ Rider::Rider(string firstName, string lastName, string phoneNumber,
     : User(firstName, lastName, phoneNumber, address, day, month, year, email,
            uname, password),
       currentLocation(0.0, 0.0), dropoffLocation(0.0, 0.0),
-      rating(initialRating), ratingCount(0), preferredPaymentMethod(defaultPayment),
-      isRiding(false) {
+      rating(initialRating), ratingCount(0),
+      preferredPaymentMethod(defaultPayment), isRiding(false) {
 }
 
 // Getters
@@ -126,11 +126,12 @@ void Rider::viewProfile() {
 }
 
 void Rider::saveData() {
-    try{
+    try {
         ofstream outFile("data/rider_credentials.csv", ios::app);
-        
-        if(!outFile.is_open()){
-            throw runtime_error("Unable to open data/rider_credentials.csv for saving.");
+
+        if (!outFile.is_open()) {
+            throw runtime_error(
+                "Unable to open data/rider_credentials.csv for saving.");
         }
         outFile << firstName << "," << lastName << "," << phoneNumber << ","
                 << homeAddress << "," << email << "," << userName << ","
@@ -140,8 +141,7 @@ void Rider::saveData() {
 
         outFile.close();
         cout << "Rider data saved successfully" << endl;
-    }
-    catch(const exception& e) {
+    } catch (const exception &e) {
         cerr << "File Error: " << e.what() << endl;
     }
 }

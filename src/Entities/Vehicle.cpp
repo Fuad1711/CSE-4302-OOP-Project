@@ -4,8 +4,9 @@
 using namespace std;
 
 Vehicle::Vehicle():licensePlate(""), vehicleId(""), 
-    vehicleModel(""), type(BIKE), baseFare(0),
-    perKmRate(0), vehicleColor(""){}
+    vehicleModel(""), type(VehicleType::BIKE), baseFare(0),
+    perKmRate(0), vehicleColor("")
+{}
 
 Vehicle::Vehicle(string vModel,string vID, string lPlate, string col,
         double fare, double rate, VehicleType vType) 
@@ -59,17 +60,17 @@ void Vehicle::setPerKmRate(double r){
     perKmRate=r;
 }
 
-string Vehicle::vehicleTypeToString(VehicleType v){
+string Vehicle::vehicleTypeToString(VehicleType v) const {
     switch(v){
-        case BIKE:
+        case VehicleType::BIKE:
             return "Bike";
-        case CNG:
+        case VehicleType::CNG:
             return "CNG";
-        case CAR_AFFORDABLE:
+        case VehicleType::CAR_AFFORDABLE:
             return "Car (Affordable)";
-        case CAR_COMFORTABLE:
+        case VehicleType::CAR_COMFORTABLE:
             return "Car (Comfortable)";
-        case CAR_LUXURY:
+        case VehicleType::CAR_LUXURY:
             return "Car (Luxury)";
         default:
             return "N/A";

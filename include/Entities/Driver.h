@@ -2,6 +2,7 @@
 #define DRIVER_H
 
 #include "User.h"
+#include "Vehicle.h"
 #include <string>
 
 using namespace std;
@@ -9,7 +10,9 @@ using namespace std;
 class Driver : public User {
 private:
   string licenseNumber;
+  Vehicle vehicle;          // Aggregation: Driver HAS-A Vehicle
   float rating;
+  int ratingCount;
   bool isAvailable;
 
 public:

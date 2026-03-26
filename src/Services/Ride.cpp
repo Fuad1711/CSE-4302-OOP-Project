@@ -28,11 +28,11 @@ Ride::Ride(Rider *r, Driver *d, Geolocation pickup, Geolocation dropoff, Payment
     distanceKm = toKm(raw);
     string vt = driver->getVehicleType();
     VehicleType vehicleType = VehicleType::CAR_AFFORDABLE;
-    if (vt == "Bike")              vehicleType = VehicleType::BIKE;
-    else if (vt == "CNG")          vehicleType = VehicleType::CNG;
-    else if (vt == "Car")          vehicleType = VehicleType::CAR_AFFORDABLE;
-    else if (vt == "Car Comfortable") vehicleType = VehicleType::CAR_COMFORTABLE;
-    else if (vt == "Car Luxury")   vehicleType = VehicleType::CAR_LUXURY;
+    if (vt == "Bike")                    vehicleType = VehicleType::BIKE;
+    else if (vt == "CNG")                vehicleType = VehicleType::CNG;
+    else if (vt == "Car (Affordable)")   vehicleType = VehicleType::CAR_AFFORDABLE;
+    else if (vt == "Car (Comfortable)")  vehicleType = VehicleType::CAR_COMFORTABLE;
+    else if (vt == "Car (Luxury)")       vehicleType = VehicleType::CAR_LUXURY;
 
     FareCalculator calc;
     fare = calc.calculateFare(distanceKm, vehicleType);
