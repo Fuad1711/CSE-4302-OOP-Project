@@ -64,13 +64,13 @@ void User::updateProfile() {
             // DOB
             cout << "Enter your date of Birth: \n";
             cin >> newDay >> newMonth >> newYear;
-            while(!is_Valid_DOB(newDay,newMonth,newYear)){
+            while (!is_Valid_DOB(newDay, newMonth, newYear)) {
                 cout << "Invalid! Please enter again" << endl;
                 cin >> newDay >> newMonth >> newYear;
             }
-            day=newDay;
-            month=newMonth;
-            year=newYear;
+            day = newDay;
+            month = newMonth;
+            year = newYear;
             break;
         case 4:
             // Address
@@ -108,8 +108,7 @@ void User::updateProfile() {
                 cout << "Enter new password (min 8 characters):" << endl;
                 cin >> newPassword;
 
-                while (!is_Valid_Password(newPassword) ||
-                       newPassword != oldPassword) {
+                while (!is_Valid_Password(newPassword)) {
                     cout << "Invalid Password. Try again: " << endl;
                     cin >> newPassword;
                 }
@@ -118,7 +117,7 @@ void User::updateProfile() {
             }
             break;
         }
-        
+
         default:
             break;
         }
@@ -126,8 +125,7 @@ void User::updateProfile() {
     updateFile();
 }
 
-User *Register() {
-
+UserRegistrationData registerCommonData() {
     // Name
     string firstName, lastName;
     cout << "Enter your first name: ";
@@ -160,7 +158,7 @@ User *Register() {
 
     // Date of Birth
     int day, month, year;
-    cout << "Enter your date of birth(DD\\MM\\YYYY): ";
+    cout << "Enter your date of birth(DD MM YYYY): ";
     cin >> day >> month >> year;
     while (!is_Valid_DOB(day, month, year)) {
         cout << "Invalid! Please enter again" << endl;
@@ -177,7 +175,7 @@ User *Register() {
     }
 
     // User name
-    string userName; // store the username in a csv file
+    string userName;
     cout << "Enter a user name:";
     cin >> userName;
     while (is_Taken_Username(userName)) {
@@ -186,15 +184,15 @@ User *Register() {
     }
 
     // Password
-    string password; // store password in csv file
+    string password;
     cout << "Enter a password of at least 8 characters: ";
     cin >> password;
     while (!is_Valid_Password(password)) {
         cout << "\n Invalid! Please enter again" << endl;
         cin >> password;
     }
-    cout << "Error: Base abstract User cannot be instantiated via this function directly without knowing the derived type." << endl;
-    return nullptr;
+
+    return UserRegistrationData{firstName, lastName, phoneNumber, address, email, userName, password, day, month, year};
 }
 
 void User::saveData() {

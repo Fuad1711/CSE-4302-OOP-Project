@@ -6,6 +6,17 @@
 #include<cctype>
 using namespace std;
 
+struct UserRegistrationData {
+    string firstName;
+    string lastName;
+    string phoneNumber;
+    string homeAddress;
+    string email;
+    string userName;
+    string password;
+    int day, month, year;
+};
+
 class User{
 protected:
 
@@ -42,10 +53,14 @@ public:
 
     string getFirstName() const { return firstName; }
     string getLastName() const { return lastName; }
+    string getUserName() const { return userName; }
+    string getPassword() const { return password; }
     virtual void updateProfile();
     virtual void viewProfile()=0;
     void saveData();
-    void updateFile();
+    virtual void updateFile();
 };
+
+UserRegistrationData registerCommonData();
 
 #endif
