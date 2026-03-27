@@ -60,7 +60,7 @@ void Vehicle::setPerKmRate(double r){
     perKmRate=r;
 }
 
-string Vehicle::vehicleTypeToString(VehicleType v) const {
+string vehicleTypeToString(VehicleType v) {
     switch(v){
         case VehicleType::BIKE:
             return "Bike";
@@ -77,7 +77,7 @@ string Vehicle::vehicleTypeToString(VehicleType v) const {
     }
 }
 
-void Vehicle::displayInfo() const{
+void Vehicle::displayInfo() {
     cout << left << setw(20) << "Model" << ": " << vehicleModel << endl;
     cout << left << setw(20) << "Vehicle ID" << ": " << vehicleId << endl;
     cout << left << setw(20) << "License Plate" << ": " << licensePlate << endl;

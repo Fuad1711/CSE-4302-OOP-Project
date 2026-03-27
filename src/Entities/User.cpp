@@ -12,17 +12,24 @@ bool is_Valid_Number(string number);
 bool is_Valid_Email(string email);
 bool is_Valid_DOB(int day, int month, int year);
 bool is_Valid_Username(string uname);
-bool is_Taken_Username(string uname);
 bool is_Valid_Password(string password);
 
 void User::updateProfile() {
-    viewProfile();
-    cout << "Update:" << endl;
-    cout << "1.Name \n2.Phone Number\n 3.Date of Birth\n 4.Address 5.Email\n "
-            "6.User Name 7.Password\n 8.Exit"
-         << endl;
     int choice;
-    while (cin >> choice && choice != 8) {
+    do {
+        viewProfile();
+        cout << "Update:" << endl;
+        cout << "1.Name \n2.Phone Number \n3.Date of Birth \n4.Address \n5.Email"
+             << "\n6.User Name \n7.Password \n8.Exit"
+             << endl;
+        cout << "Enter choice: ";
+        if(!(cin>>choice)){
+            cin.clear();
+            cin.ignore(1000,'\n');
+            continue;   
+        }
+        if (choice == 8) break;
+        
         string newFirstName;
         string newLastName;
         string newNumber;
@@ -49,7 +56,9 @@ void User::updateProfile() {
                 cin >> newLastName;
             }
             lastName = newLastName;
+            cout << "Press 8 to exit"<<endl;
             break;
+
         case 2:
             // Phone Number
             cout << "Enter your phone number: \n";
@@ -59,7 +68,9 @@ void User::updateProfile() {
                 cin >> newNumber;
             }
             phoneNumber = newNumber;
+            cout << "Press 8 to exit"<<endl;
             break;
+
         case 3:
             // DOB
             cout << "Enter your date of Birth: \n";
@@ -71,13 +82,17 @@ void User::updateProfile() {
             day = newDay;
             month = newMonth;
             year = newYear;
+            cout << "Press 8 to exit"<<endl;
             break;
+
         case 4:
             // Address
             cin.ignore();
             getline(cin, newAddress);
             homeAddress = newAddress;
+            cout << "Press 8 to exit"<<endl;
             break;
+            
         case 5:
             // Email
             cout << "Enter your email: ";
@@ -87,18 +102,19 @@ void User::updateProfile() {
                 cin >> newEmail;
             }
             email = newEmail;
+            cout << "Press 8 to exit"<<endl;
             break;
+        
+        
         case 6:
             // User name
             cout << "Enter a user name:";
             cin >> newUserName;
-            while (is_Taken_Username(newUserName)) {
-                cout << "Invalid! Please enter again";
-                cin >> newUserName;
-            }
             userName = newUserName;
             cout << "Username updated successfully" << endl;
+            cout << "Press 8 to exit"<<endl;
             break;
+        
         case 7: {
             // Password
             string oldPassword;
@@ -115,14 +131,15 @@ void User::updateProfile() {
                 password = newPassword;
                 cout << "Password Updated" << endl;
             }
+            cout << "Press 8 to exit"<<endl;
             break;
         }
 
         default:
             break;
         }
-    }
-    updateFile();
+        cout << "Updated successfully." << endl;
+    } while (true);
 }
 
 UserRegistrationData registerCommonData() {
@@ -178,10 +195,6 @@ UserRegistrationData registerCommonData() {
     string userName;
     cout << "Enter a user name:";
     cin >> userName;
-    while (is_Taken_Username(userName)) {
-        cout << "\n Invalid! Please enter again" << endl;
-        cin >> userName;
-    }
 
     // Password
     string password;
@@ -193,47 +206,6 @@ UserRegistrationData registerCommonData() {
     }
 
     return UserRegistrationData{firstName, lastName, phoneNumber, address, email, userName, password, day, month, year};
-}
-
-void User::saveData() {
-    ofstream outFile("data/User_credentials.csv", ios::app);
-
-    if (outFile.is_open()) {
-        outFile << userName << "," << password << "," << firstName << ","
-                << lastName << "," << phoneNumber << "," << email << "," << day
-                << "/" << month << "/" << year << endl;
-        outFile.close();
-    }
-}
-
-void User::updateFile() {
-    ifstream inFile("data/User_credentials.csv");
-    vector<string> fileData;
-    string line;
-    if (inFile.is_open()) {
-        while (getline(inFile, line)) {
-            int position = line.find(',');
-            string currentUser = line.substr(0, position);
-            if (currentUser == userName) {
-                string updated = userName + ',' + password + ',' + firstName +
-                                 ',' + lastName + ',' + phoneNumber + ',' +
-                                 email + ',' + to_string(day) + "/" +
-                                 to_string(month) + "/" + to_string(year);
-                fileData.push_back(updated);
-            } else {
-                fileData.push_back(line);
-            }
-        }
-        inFile.close();
-    }
-
-    ofstream outFile("data/User_credentials.csv");
-    if (outFile.is_open()) {
-        for (auto &line : fileData) {
-            outFile << line << endl;
-        }
-        outFile.close();
-    }
 }
 
 bool is_Valid_Name(string name) {
@@ -262,22 +234,6 @@ bool is_Valid_Email(string email) {
     } else {
         return true;
     }
-}
-
-bool is_Taken_Username(string uname) {
-    ifstream inFile("data/User_credentials.csv");
-    string line;
-    if (inFile.is_open()) {
-        while (getline(inFile, line)) {
-            int position = line.find(',');
-            string found = line.substr(0, position);
-            if (uname == found) {
-                return true;
-            }
-        }
-        inFile.close();
-    }
-    return false;
 }
 
 bool is_Valid_Password(string password) {

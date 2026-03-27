@@ -14,7 +14,7 @@ private:
 
 public:
     Geolocation() : latitude(0.0), longitude(0.0), locationName("") {}
-    Geolocation(double lat, double lon, string name = "") 
+    Geolocation(double lat, double lon, string name="Fuadpara") 
         : latitude(lat), longitude(lon), locationName(name) {}
 
     double getLatitude() const {

@@ -102,6 +102,7 @@ void Rider::updateProfile() {
     } else {
         cout << "Invalid choice." << endl;
     }
+    updateFile();
 }
 
 void Rider::viewProfile() {
@@ -145,3 +146,40 @@ void Rider::saveData() {
         cerr << "File Error: " << e.what() << endl;
     }
 }
+
+void Rider::updateFile() {
+    ifstream inFile("data/rider_credentials.csv");
+    vector<string> fileData;
+    string line;
+    if (inFile.is_open()) {
+        while (getline(inFile, line)) {
+            stringstream ss(line);
+            string f[13];
+            for(int i = 0; i < 12; i++){
+                getline(ss, f[i], ',');
+            }
+            getline(ss, f[12]); //Last data
+            if (f[5] == oldUserName) {
+                string updated = firstName + "," + lastName + "," + phoneNumber + "," +
+                                 homeAddress + "," + email + "," + userName + "," +
+                                 password + "," + to_string(day) + "," + to_string(month) + "," + 
+                                 to_string(year) + "," + to_string(rating) + "," + 
+                                 preferredPaymentMethod + "," + to_string(isRiding);
+                fileData.push_back(updated);
+            } else {
+                fileData.push_back(line);
+            }
+        }
+        inFile.close();
+    }
+
+    ofstream outFile("data/rider_credentials.csv");
+    if (outFile.is_open()) {
+        for (auto &updatedLine : fileData) {
+            outFile << updatedLine << endl;
+        }
+        outFile.close();
+        oldUserName = userName;
+    }
+}
+
