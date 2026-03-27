@@ -2,6 +2,7 @@
 #define User_h
 #include<iostream>
 #include<fstream>
+#include<sstream>
 #include<string>
 #include<cctype>
 using namespace std;
@@ -26,6 +27,7 @@ protected:
     string homeAddress;
     string email;
     string userName;
+    string oldUserName;
     string password;
     //Date of Birth
     int day,month,year;
@@ -34,13 +36,13 @@ public:
 
     User() : firstName(""), lastName(""), 
         phoneNumber(""), homeAddress(""), 
-        email(""), userName(""), 
+        email(""), userName(""), oldUserName(""),
         password(""), day(0), month(0), year(0){}
     
     User(string firstName, string lastName, 
         string phoneNumber,string address, 
         int day, int month, int year, 
-        string email, string uname, 
+        string email, string uname,
         string password)
         : firstName(firstName),
         lastName(lastName),
@@ -49,6 +51,7 @@ public:
         day(day), month(month), year(year),
         email(email),
         userName(uname),
+        oldUserName(uname),
         password(password){}
 
     string getFirstName() const { return firstName; }
@@ -57,8 +60,8 @@ public:
     string getPassword() const { return password; }
     virtual void updateProfile();
     virtual void viewProfile()=0;
-    void saveData();
-    virtual void updateFile();
+    virtual void saveData()=0;
+    virtual void updateFile()=0;
 };
 
 UserRegistrationData registerCommonData();

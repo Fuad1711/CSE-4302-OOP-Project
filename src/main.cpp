@@ -6,7 +6,10 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+
 using namespace std;
+
+
 
 // ============ Load accounts from CSV ============
 
@@ -113,7 +116,11 @@ void riderMenu(Rider *rider, vector<Driver *> &drivers) {
                 "Logout"
              << endl;
         cout << "Enter choice: ";
-        cin >> choice;
+        if (!(cin >> choice)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            continue;
+        }
         if (choice == 1) {
             string pickupName, dropoffName;
             double pickLat, pickLon, dropLat, dropLon;
@@ -134,7 +141,7 @@ void riderMenu(Rider *rider, vector<Driver *> &drivers) {
             Geolocation pickup(pickLat, pickLon, pickupName);
             Geolocation dropoff(dropLat, dropLon, dropoffName);
             rider->setCurrentLocation(pickup);
-            Driver *matched = matcher.findAvailableDriver(drivers);
+            Driver *matched = matcher.findAvailableDriver(drivers,pickup);
             if (!matched) {
                 cout << "No drivers available." << endl;
                 continue;
@@ -184,7 +191,11 @@ void driverMenu(Driver *driver) {
              << endl;
         cout << "2. View Profile\n3. Update Profile\n4. Logout" << endl;
         cout << "Enter choice: ";
-        cin >> choice;
+        if (!(cin >> choice)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            continue;
+        }
         if (choice == 1) {
             driver->toggleAvailability();
         } else if (choice == 2) {
@@ -236,7 +247,11 @@ int main() {
                 "RIP-OFF\n================================"
              << endl;
         cout << "1. Login\n2. Register\n3. Exit\nEnter choice: ";
-        cin >> choice;
+        if (!(cin >> choice)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            continue;
+        }
         if (choice == 3) {
             cout << "Goodbye!" << endl;
             break;

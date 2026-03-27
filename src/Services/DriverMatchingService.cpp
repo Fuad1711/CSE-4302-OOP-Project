@@ -2,11 +2,16 @@
 #include <iostream>
 using namespace std;
 
-Driver* DriverMatchingService::findAvailableDriver(vector<Driver*>& drivers) {
-    for (int i = 0; i < (int)drivers.size(); i++) {
-        if (drivers[i]->getAvailability()) {
-            return drivers[i];
+Driver* DriverMatchingService::findAvailableDriver(vector<Driver*>& drivers,const Geolocation& riderLocation) {
+    double minDist=INT_MAX;
+    Driver* bestDriver=nullptr;
+    for (auto d: drivers) {
+        if (!d->getAvailability()) continue;
+        double dist=riderLocation.calculateDistance(d->getCurrentLocation());
+        if(dist<minDist){
+            minDist=dist;
+            bestDriver=d;
         }
     }
-    return nullptr;
+    return bestDriver;
 }

@@ -5,6 +5,7 @@
 #include "../Common/Geolocation.h"
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
 class Rider : public User {
@@ -47,6 +48,7 @@ class Rider : public User {
     void updateProfile();
     void viewProfile() override;
     void saveData();
+    void updateFile();
 };
 
 

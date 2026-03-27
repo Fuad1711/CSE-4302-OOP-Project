@@ -39,8 +39,8 @@ public:
     void setBaseFare(double f);
     void setPerKmRate(double r);
 
-    string vehicleTypeToString(VehicleType v) const;
-    void displayInfo() const;
+    void displayInfo();
 };
+string vehicleTypeToString(VehicleType v);
 
 #endif 

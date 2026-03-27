@@ -24,27 +24,25 @@ static VehicleType stringToVehicleType(const string &vType) {
 // Default Constructor
 Driver::Driver()
     : User(), licenseNumber(""), vehicle(), rating(0.0), ratingCount(0),
-      isAvailable(false) {
-}
+      isAvailable(false), currentLocation(0,0){}
 
 // Parameterized Constructor
 Driver::Driver(string firstName, string lastName, string phoneNumber,
                string address, int day, int month, int year, string email,
-               string uname, string password, string licenseNum, string vType,
-               string vModel, string lPlate, float initialRating)
+               string uname, string password,
+               string licenseNum, string vType, string vModel,
+               string lPlate, float initialRating, Geolocation currLoc)
     : User(firstName, lastName, phoneNumber, address, day, month, year, email,
-           uname, password),
-      licenseNumber(licenseNum),
-      vehicle(vModel, "", lPlate, "", 0.0, 0.0, stringToVehicleType(vType)),
-      rating(initialRating), ratingCount(0), isAvailable(true) {
-}
+        uname, password), licenseNumber(licenseNum),
+        vehicle(vModel, "", lPlate, "", 0.0, 0.0, stringToVehicleType(vType)),
+        rating(initialRating), ratingCount(0), isAvailable(true),currentLocation(currLoc) {}
 
 // Getters — delegate vehicle stuff to the Vehicle object
 string Driver::getLicenseNumber() const {
     return licenseNumber;
 }
 string Driver::getVehicleType() const {
-    return vehicle.vehicleTypeToString(vehicle.getType());
+    return vehicleTypeToString(vehicle.getType());
 }
 string Driver::getVehicleModel() const {
     return vehicle.getModel();
@@ -57,6 +55,9 @@ float Driver::getRating() const {
 }
 bool Driver::getAvailability() const {
     return isAvailable;
+}
+Geolocation Driver::getCurrentLocation() const {
+    return currentLocation;
 }
 
 // Setters
@@ -111,17 +112,54 @@ void Driver::updateProfile() {
         cout << "Enter new Vehicle Model: ";
         string vModel;
         cin >> vModel;
-        vehicle.setModel(vModel); // BUG FIX: was setVehicleModel(vType)
+        vehicle.setModel(vModel); 
 
         cout << "Enter new License Plate: ";
         string lPlate;
         cin >> lPlate;
-        vehicle.setLicensePlate(
-            lPlate); // BUG FIX: was setLicenseNumber(lPlate)
+        vehicle.setLicensePlate(lPlate); 
         cout << "Vehicle information updated successfully!" << endl;
     } else {
         cout << "Invalid choice." << endl;
     }
+    updateFile();
+}
+
+void Driver::updateFile() {
+    ifstream inFile("data/driver_credentials.csv");
+    vector<string> fileData;
+    string line;
+    if (inFile.is_open()) {
+        while (getline(inFile, line)) {
+            stringstream ss(line);
+            string f[16];
+            for(int i=0;i<15;i++){
+                getline(ss,f[i],',');
+            }
+            getline(ss,f[15]);
+            if (f[5] == oldUserName) {
+                string updated = firstName + "," + lastName + "," + phoneNumber + "," + 
+                homeAddress + "," + email + "," + userName + "," + password + "," +
+                to_string(day) + "," + to_string(month) + "," + to_string(year) + "," + 
+                licenseNumber + "," + vehicleTypeToString(vehicle.getType()) + "," + 
+                vehicle.getModel() + "," + vehicle.getLicensePlate() + "," +
+                to_string(rating) + "," + to_string(isAvailable ? 1 : 0);
+                fileData.push_back(updated);
+            } else {
+                fileData.push_back(line);
+            }
+        }
+        inFile.close();
+    }
+
+    ofstream outFile("data/driver_credentials.csv");
+    if (outFile.is_open()) {
+        for (auto &line : fileData) {
+            outFile << line << endl;
+        }
+        outFile.close();
+    }
+    oldUserName = userName;
 }
 
 void Driver::viewProfile() {
@@ -134,7 +172,7 @@ void Driver::viewProfile() {
     cout << "User Name:" << userName << endl;
     cout << "License Number: " << licenseNumber << endl;
     cout << "Vehicle: " << vehicle.getModel() << " ("
-         << vehicle.vehicleTypeToString(vehicle.getType()) << ") - "
+         << vehicleTypeToString(vehicle.getType()) << ") - "
          << vehicle.getLicensePlate() << endl;
     cout << "Rating: " << rating << " Stars" << endl;
     cout << "Status: " << (isAvailable ? "Available" : "Currently Unavailable")
@@ -152,7 +190,7 @@ void Driver::saveData() {
                 << homeAddress << "," << email << "," << userName << ","
                 << password << "," << day << "," << month << "," << year << ","
                 << licenseNumber << ","
-                << vehicle.vehicleTypeToString(vehicle.getType()) << ","
+                << vehicleTypeToString(vehicle.getType()) << ","
                 << vehicle.getModel() << "," << vehicle.getLicensePlate() << ","
                 << rating << "," << isAvailable << "\n";
         outFile.close();
