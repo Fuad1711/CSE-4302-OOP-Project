@@ -82,6 +82,9 @@ void Driver::setRatingCount(int count) {
 int Driver::getRatingCount() const {
     return ratingCount;
 }
+void Driver::setCurrentLocation(Geolocation l) {
+    currentLocation = l;
+}
 
 // Core Methods
 void Driver::toggleAvailability() {
@@ -132,18 +135,19 @@ void Driver::updateFile() {
     if (inFile.is_open()) {
         while (getline(inFile, line)) {
             stringstream ss(line);
-            string f[16];
-            for(int i=0;i<15;i++){
+            string f[18];
+            for(int i=0;i<17;i++){
                 getline(ss,f[i],',');
             }
-            getline(ss,f[15]);
+            getline(ss,f[17]);
             if (f[5] == oldUserName) {
                 string updated = firstName + "," + lastName + "," + phoneNumber + "," + 
                 homeAddress + "," + email + "," + userName + "," + password + "," +
                 to_string(day) + "," + to_string(month) + "," + to_string(year) + "," + 
                 licenseNumber + "," + vehicleTypeToString(vehicle.getType()) + "," + 
                 vehicle.getModel() + "," + vehicle.getLicensePlate() + "," +
-                to_string(rating) + "," + to_string(isAvailable ? 1 : 0);
+                to_string(rating) + "," + to_string(isAvailable ? 1 : 0) + "," +
+                to_string(currentLocation.getLatitude()) + "," + to_string(currentLocation.getLongitude());
                 fileData.push_back(updated);
             } else {
                 fileData.push_back(line);
@@ -192,7 +196,8 @@ void Driver::saveData() {
                 << licenseNumber << ","
                 << vehicleTypeToString(vehicle.getType()) << ","
                 << vehicle.getModel() << "," << vehicle.getLicensePlate() << ","
-                << rating << "," << isAvailable << "\n";
+                << rating << "," << isAvailable << ","
+                << currentLocation.getLatitude() << "," << currentLocation.getLongitude() << "\n";
         outFile.close();
         cout << "Driver data saved successfully" << endl;
     } catch (const exception &e) {

@@ -9,8 +9,6 @@
 
 using namespace std;
 
-
-
 // ============ Load accounts from CSV ============
 
 void loadRiders(vector<Rider *> &riders) {
@@ -47,13 +45,19 @@ void loadDrivers(vector<Driver *> &drivers) {
             continue;
         try {
             stringstream ss(line);
-            string f[16];
-            for (int i = 0; i < 15; i++)
+            string f[18];
+            for (int i = 0; i < 17; i++)
                 getline(ss, f[i], ',');
-            getline(ss, f[15]); // last field
-            drivers.push_back(new Driver(
-                f[0], f[1], f[2], f[3], stoi(f[7]), stoi(f[8]), stoi(f[9]),
-                f[4], f[5], f[6], f[10], f[11], f[12], f[13], stof(f[14])));
+            getline(ss, f[17]); // last field
+            Geolocation loc(0, 0);
+            // If lat/lon fields exist (new format), parse them
+            if (!f[16].empty() && !f[17].empty()) {
+                loc = Geolocation(stod(f[16]), stod(f[17]));
+            }
+            drivers.push_back(new Driver(f[0], f[1], f[2], f[3], stoi(f[7]),
+                                         stoi(f[8]), stoi(f[9]), f[4], f[5],
+                                         f[6], f[10], f[11], f[12], f[13],
+                                         stof(f[14]), loc));
         } catch (...) {
             continue;
         }
@@ -71,10 +75,11 @@ Rider *registerRider() {
     cout << "Payment (Cash/Bkash): ";
     cin >> payment;
 
-    Rider *newRider = new Rider(commonData.firstName, commonData.lastName, commonData.phoneNumber,
-                                commonData.homeAddress, commonData.day, commonData.month,
-                                commonData.year, commonData.email, commonData.userName,
-                                commonData.password, 0.0, payment);
+    Rider *newRider = new Rider(
+        commonData.firstName, commonData.lastName, commonData.phoneNumber,
+        commonData.homeAddress, commonData.day, commonData.month,
+        commonData.year, commonData.email, commonData.userName,
+        commonData.password, 0.0, payment);
     newRider->saveData();
     cout << "Registration successful!" << endl;
     return newRider;
@@ -95,10 +100,11 @@ Driver *registerDriver() {
     cout << "License plate: ";
     cin >> plate;
 
-    Driver *newDriver = new Driver(commonData.firstName, commonData.lastName, commonData.phoneNumber,
-                                   commonData.homeAddress, commonData.day, commonData.month,
-                                   commonData.year, commonData.email, commonData.userName,
-                                   commonData.password, license, vType, vModel, plate);
+    Driver *newDriver = new Driver(
+        commonData.firstName, commonData.lastName, commonData.phoneNumber,
+        commonData.homeAddress, commonData.day, commonData.month,
+        commonData.year, commonData.email, commonData.userName,
+        commonData.password, license, vType, vModel, plate);
     newDriver->saveData();
     cout << "Registration successful!" << endl;
     return newDriver;
@@ -141,7 +147,7 @@ void riderMenu(Rider *rider, vector<Driver *> &drivers) {
             Geolocation pickup(pickLat, pickLon, pickupName);
             Geolocation dropoff(dropLat, dropLon, dropoffName);
             rider->setCurrentLocation(pickup);
-            Driver *matched = matcher.findAvailableDriver(drivers,pickup);
+            Driver *matched = matcher.findAvailableDriver(drivers, pickup);
             if (!matched) {
                 cout << "No drivers available." << endl;
                 continue;
@@ -169,6 +175,9 @@ void riderMenu(Rider *rider, vector<Driver *> &drivers) {
             int rating;
             cin >> rating;
             ride.rateDriver(rating);
+            // save updated locations and ratings to CSV
+            rider->updateFile();
+            matched->updateFile();
         } else if (choice == 2) {
             rider->viewProfile();
         } else if (choice == 3) {

@@ -89,7 +89,10 @@ void Ride::completeRide(){
     }
     status  = RideStatus::COMPLETED;
     if(rider) rider->endRide();
-    if(driver) driver->toggleAvailability();
+    if(driver) {
+        driver->toggleAvailability();
+        driver->setCurrentLocation(dropoffLocation);
+    }
     cout << "[Ride #" << rideId << "] Completed." << endl;
     processPayment();
 }

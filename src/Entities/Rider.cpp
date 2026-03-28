@@ -155,16 +155,17 @@ void Rider::updateFile() {
         while (getline(inFile, line)) {
             stringstream ss(line);
             string f[13];
-            for(int i = 0; i < 12; i++){
+            for (int i = 0; i < 12; i++) {
                 getline(ss, f[i], ',');
             }
-            getline(ss, f[12]); //Last data
+            getline(ss, f[12]); // Last data
             if (f[5] == oldUserName) {
-                string updated = firstName + "," + lastName + "," + phoneNumber + "," +
-                                 homeAddress + "," + email + "," + userName + "," +
-                                 password + "," + to_string(day) + "," + to_string(month) + "," + 
-                                 to_string(year) + "," + to_string(rating) + "," + 
-                                 preferredPaymentMethod + "," + to_string(isRiding);
+                string updated =
+                    firstName + "," + lastName + "," + phoneNumber + "," +
+                    homeAddress + "," + email + "," + userName + "," +
+                    password + "," + to_string(day) + "," + to_string(month) +
+                    "," + to_string(year) + "," + to_string(rating) + "," +
+                    preferredPaymentMethod + "," + to_string(isRiding);
                 fileData.push_back(updated);
             } else {
                 fileData.push_back(line);
@@ -182,4 +183,3 @@ void Rider::updateFile() {
         oldUserName = userName;
     }
 }
-
