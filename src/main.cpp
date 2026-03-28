@@ -100,11 +100,18 @@ Driver *registerDriver() {
     cout << "License plate: ";
     cin >> plate;
 
+    double lat, lon;
+    cout << "Current location lat: ";
+    cin >> lat;
+    cout << "Current location lon: ";
+    cin >> lon;
+    Geolocation loc(lat, lon);
+
     Driver *newDriver = new Driver(
         commonData.firstName, commonData.lastName, commonData.phoneNumber,
         commonData.homeAddress, commonData.day, commonData.month,
         commonData.year, commonData.email, commonData.userName,
-        commonData.password, license, vType, vModel, plate);
+        commonData.password, license, vType, vModel, plate, 0.0, loc);
     newDriver->saveData();
     cout << "Registration successful!" << endl;
     return newDriver;
